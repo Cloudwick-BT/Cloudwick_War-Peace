@@ -1,0 +1,7 @@
+/bin
+.settings
+.classpath
+.project
+War_Peace.iml
+.idea/
+out/
