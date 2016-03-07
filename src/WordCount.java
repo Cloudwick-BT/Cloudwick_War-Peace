@@ -21,7 +21,7 @@ public class WordCount {
         try {
             file = new FileReader(fileName);
             br = new BufferedReader(file);
-            
+
             while ((currentLine = br.readLine()) != null) {
                 arrayList = currentLine.split("[^a-zA-Z]");
                 for(String str : arrayList){
