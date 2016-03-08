@@ -6,26 +6,42 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.HashMap;
+import java.util.*;
 import java.io.FileWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 public class FrequencyTable {
+
+    //Method for sorting the TreeMap based on values
+
+
+
     public static void main(String [] args) {
         int count = 0;
-        String word = null;
-        String fileName = "F:/Cloudwick/java_Cloudwick/gutenberg/prac.txt";
+        String fileName = "F:/Cloudwick/java_Cloudwick/gutenberg/war&peace.txt";
         FileReader file = null;
         BufferedReader br = null;
         String currentLine = null;
         String[] arrayList = null;
-        HashMap<String, Integer> hmap = new HashMap<String, Integer> ();
-
+        Map<String, Integer> hmap = new HashMap<String, Integer> ();
+        //TreeMap<String, Integer> hmap = new TreeMap<String, Integer> ();
         // csv filename to be written
         String outFile = "F:/Cloudwick/java_Cloudwick/gutenberg/tf.csv";
-
         boolean checkExist = new File(outFile).exists();
+
+        if (checkExist){
+            System.out.print(outFile + " file exist !");
+            return;
+        }
+
+        SortedSet<Map.Entry<String, Integer>> sortedset = new TreeSet<Map.Entry<String, Integer>>(
+                new Comparator<Map.Entry<String, Integer>>() {
+                    @Override
+                    public int compare(Map.Entry<String, Integer> e1,
+                                       Map.Entry<String, Integer> e2) {
+                        return (-1*e1.getValue().compareTo(e2.getValue()));
+                    }
+                });
 
         try {
             file = new FileReader(fileName);
@@ -59,9 +75,44 @@ public class FrequencyTable {
             }
             writer.flush();
             writer.close();
+
+            // to write top 10 words
+            outFile = "F:/Cloudwick/java_Cloudwick/gutenberg/tf10.csv";
+            checkExist = new File(outFile).exists();
+
+            if (checkExist){
+                System.out.print("top 10 file exist !");
+                return;
+            }
+
+            sortedset.addAll(hmap.entrySet());
+
+            // Use iterator to display the keys and associated values
+            System.out.println("Map Values Before: ");
+            Set keys = hmap.keySet();
+            for (Iterator i = keys.iterator(); i.hasNext();) {
+                String key = (String) i.next();
+                Integer value = (Integer) hmap.get(key);
+             //   System.out.println(key + " = " + value);
+            }
+/*
+            writer = new FileWriter(outFile);
+
+            for (sortedset){
+                writer.append(key);
+                writer.append(",");
+                writer.append((hmap.get(key)).toString());
+                writer.append("\n");
+            }
+            writer.flush();
+            writer.close();
+  */
+
+            System.out.println(sortedset);
+
         }
         catch(Exception e){
-            System.out.println("File not found !!");
+            e.printStackTrace();
         }
 
 
